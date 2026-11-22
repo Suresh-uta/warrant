@@ -32,7 +32,9 @@ from warrant.authz.policy import (
 
 
 def principal(groups=("engineering",), clearance=5, **kw):
-    return Principal.build("user@example.test", groups=groups, clearance=clearance, **kw)
+    return Principal.build(
+        "user@example.test", groups=groups, clearance=clearance, **kw
+    )
 
 
 def acl(groups=("engineering",), clearance=None):
@@ -67,7 +69,10 @@ def test_clearance_below_minimum_is_denied_despite_correct_group():
 
 
 def test_high_clearance_does_not_override_group_membership():
-    d = authorize(principal(groups=["engineering"], clearance=99), acl(["executive", "people-ops"], 7))
+    d = authorize(
+        principal(groups=["engineering"], clearance=99),
+        acl(["executive", "people-ops"], 7),
+    )
     assert not d.allowed
     assert d.reason == DENY_NO_GROUP_OVERLAP
 
@@ -127,14 +132,18 @@ def test_wildcard_group_does_not_bypass_clearance():
 
 
 def test_service_principal_without_clearance_cannot_read_clearance_gated_doc():
-    caller = Principal.build("svc-indexer", groups=["platform"], clearance=None, kind=SERVICE)
+    caller = Principal.build(
+        "svc-indexer", groups=["platform"], clearance=None, kind=SERVICE
+    )
     d = authorize(caller, acl(["platform"], 3))
     assert not d.allowed
     assert d.reason == DENY_PRINCIPAL_HAS_NO_CLEARANCE
 
 
 def test_service_principal_may_read_ungated_doc_in_its_group():
-    caller = Principal.build("svc-indexer", groups=["platform"], clearance=None, kind=SERVICE)
+    caller = Principal.build(
+        "svc-indexer", groups=["platform"], clearance=None, kind=SERVICE
+    )
     assert authorize(caller, acl(["platform"])).allowed
 
 

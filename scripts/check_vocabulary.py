@@ -40,7 +40,7 @@ import os
 import re
 import subprocess
 import sys
-from typing import Iterable, List, Sequence, Tuple
+from collections.abc import Iterable, Sequence
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DENYLIST_FILE = os.path.join(REPO_ROOT, ".vocabulary-denylist")
@@ -54,15 +54,27 @@ EXEMPT_PATHS = {
 }
 
 BINARY_SUFFIXES = {
-    ".png", ".jpg", ".jpeg", ".gif", ".pdf", ".zip", ".gz", ".ico",
-    ".woff", ".woff2", ".ttf", ".so", ".dylib", ".whl",
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".pdf",
+    ".zip",
+    ".gz",
+    ".ico",
+    ".woff",
+    ".woff2",
+    ".ttf",
+    ".so",
+    ".dylib",
+    ".whl",
 }
 
 # Domains that are reserved by RFC 2606 / RFC 6761 for documentation and
 # testing. Anything else that looks like a corporate domain is suspect.
 SAFE_DOMAIN = re.compile(r"\b(?:example\.(?:com|org|net)|example\.test|localhost)\b")
 
-Pattern = Tuple[str, "re.Pattern[str]", str]
+Pattern = tuple[str, "re.Pattern[str]", str]
 
 STRUCTURAL_PATTERNS: Sequence[Pattern] = (
     (
@@ -93,17 +105,19 @@ STRUCTURAL_PATTERNS: Sequence[Pattern] = (
     ),
     (
         "non-example-corporate-email",
-        re.compile(r"\b[\w.+-]+@(?!example\.(?:com|org|net|test)\b)[\w-]+\.[a-z]{2,}\b"),
+        re.compile(
+            r"\b[\w.+-]+@(?!example\.(?:com|org|net|test)\b)[\w-]+\.[a-z]{2,}\b"
+        ),
         "Email address on a non-example domain. Use user@example.test.",
     ),
 )
 
 
-def load_denylist() -> List[str]:
+def load_denylist() -> list[str]:
     if not os.path.exists(DENYLIST_FILE):
         return []
     terms = []
-    with open(DENYLIST_FILE, "r", encoding="utf-8") as fh:
+    with open(DENYLIST_FILE, encoding="utf-8") as fh:
         for raw in fh:
             term = raw.strip()
             if term and not term.startswith("#"):
@@ -111,7 +125,7 @@ def load_denylist() -> List[str]:
     return terms
 
 
-def tracked_files() -> List[str]:
+def tracked_files() -> list[str]:
     try:
         out = subprocess.run(
             ["git", "ls-files"],
@@ -124,16 +138,18 @@ def tracked_files() -> List[str]:
         # Not a git repo yet (e.g. first run before `git init`) -- walk instead.
         collected = []
         for root, dirs, files in os.walk(REPO_ROOT):
-            dirs[:] = [d for d in dirs if d not in {".git", ".venv", "__pycache__", "node_modules"}]
+            dirs[:] = [
+                d
+                for d in dirs
+                if d not in {".git", ".venv", "__pycache__", "node_modules"}
+            ]
             for name in files:
-                collected.append(
-                    os.path.relpath(os.path.join(root, name), REPO_ROOT)
-                )
+                collected.append(os.path.relpath(os.path.join(root, name), REPO_ROOT))
         return collected
     return [line for line in out.splitlines() if line]
 
 
-def scan_line(line: str, denylist: Sequence[str]) -> List[Tuple[str, str, str]]:
+def scan_line(line: str, denylist: Sequence[str]) -> list[tuple[str, str, str]]:
     """Return (rule, matched_text, guidance) for each violation on the line."""
     if SUPPRESSION.search(line):
         return []
@@ -170,7 +186,7 @@ def check(paths: Iterable[str], denylist: Sequence[str]) -> int:
         if not os.path.isfile(full):
             continue
         try:
-            with open(full, "r", encoding="utf-8") as fh:
+            with open(full, encoding="utf-8") as fh:
                 lines = fh.readlines()
         except (UnicodeDecodeError, OSError):
             continue

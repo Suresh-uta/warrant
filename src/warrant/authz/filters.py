@@ -27,7 +27,6 @@ query, on every leg (keyword and vector), before scoring.
 """
 
 from dataclasses import dataclass
-from typing import FrozenSet, Optional
 
 from .models import ALL_GROUPS, Principal
 
@@ -52,8 +51,8 @@ class AclFilter:
             intersection clause is always well-formed.
     """
 
-    clearance_ceiling: Optional[int]
-    group_terms: FrozenSet[str]
+    clearance_ceiling: int | None
+    group_terms: frozenset[str]
 
     @property
     def excludes_all_clearance_gated(self) -> bool:

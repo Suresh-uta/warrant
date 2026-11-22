@@ -30,9 +30,9 @@ purely group-based uses ``groups`` alone. The engine never interprets the
 set intersection.
 """
 
+from collections.abc import Iterable
 from dataclasses import dataclass
-from datetime import datetime, timezone
-from typing import FrozenSet, Iterable, Optional
+from datetime import UTC, datetime
 
 # Explicit sentinel meaning "every group". Must be written deliberately into a
 # document's ACL. There is no implicit path to public visibility -- an ACL that
@@ -63,8 +63,8 @@ class Principal:
     """
 
     subject_id: str
-    clearance: Optional[int]
-    groups: FrozenSet[str]
+    clearance: int | None
+    groups: frozenset[str]
     resolved_at: datetime
     kind: str = HUMAN
 
@@ -72,9 +72,9 @@ class Principal:
     def build(
         subject_id: str,
         groups: Iterable[str],
-        clearance: Optional[int] = None,
+        clearance: int | None = None,
         kind: str = HUMAN,
-        resolved_at: Optional[datetime] = None,
+        resolved_at: datetime | None = None,
     ) -> "Principal":
         if not subject_id:
             raise ValueError("Principal requires a subject_id")
@@ -85,12 +85,12 @@ class Principal:
             subject_id=subject_id,
             clearance=clearance,
             groups=normalized,
-            resolved_at=resolved_at or datetime.now(timezone.utc),
+            resolved_at=resolved_at or datetime.now(UTC),
             kind=kind,
         )
 
-    def age_seconds(self, now: Optional[datetime] = None) -> float:
-        now = now or datetime.now(timezone.utc)
+    def age_seconds(self, now: datetime | None = None) -> float:
+        now = now or datetime.now(UTC)
         return (now - self.resolved_at).total_seconds()
 
 
@@ -104,13 +104,13 @@ class DocumentACL:
     high clearance is not a master key.
     """
 
-    min_clearance: Optional[int]
-    allowed_groups: FrozenSet[str]
+    min_clearance: int | None
+    allowed_groups: frozenset[str]
 
     @staticmethod
     def build(
         allowed_groups: Iterable[str],
-        min_clearance: Optional[int] = None,
+        min_clearance: int | None = None,
     ) -> "DocumentACL":
         normalized = frozenset(g.strip() for g in allowed_groups if g and g.strip())
         return DocumentACL(min_clearance=min_clearance, allowed_groups=normalized)
