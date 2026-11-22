@@ -1,0 +1,30 @@
+# Local vocabulary denylist — intentionally NEVER committed.
+# It holds the literal internal terms this project must not publish; shipping
+# that list would publish them. See CONTRIBUTING.md.
+.vocabulary-denylist
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Local config and ingested data
+warrant.yaml
+.env
+*.local.yaml
+data/
+.artifacts/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/

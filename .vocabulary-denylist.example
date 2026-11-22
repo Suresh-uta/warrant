@@ -1,0 +1,17 @@
+# Copy to .vocabulary-denylist (gitignored) and add literal terms that must
+# never be committed to this public repository.
+#
+# One term per line. Case-insensitive substring match. Lines starting with #
+# are ignored.
+#
+# This .example file is committed; the real .vocabulary-denylist is NOT.
+# That split is deliberate — a committed list of internal codenames would
+# publish the very names it is meant to protect.
+#
+# In CI, supply the same content as the VOCABULARY_DENYLIST repository secret.
+#
+# Examples of the KINDS of things to list (do not commit real values):
+#   <your-internal-sso-system-name>
+#   <your-internal-wiki-hostname>
+#   <your-company-name-if-unannounced>
+#   <internal-project-codename>

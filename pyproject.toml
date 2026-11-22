@@ -1,0 +1,67 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "warrant"
+version = "0.0.1"
+description = "Permission-aware RAG: retrieval that respects who's asking, with grounded citations."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+keywords = ["rag", "retrieval", "access-control", "embeddings", "citations"]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Text Processing :: Indexing",
+]
+
+# Deliberately empty for now. Dependencies get added as each subsystem lands,
+# so the core stays importable without pulling a parsing or vector stack.
+dependencies = []
+
+[project.optional-dependencies]
+# Each extra maps to one adapter, so installing Warrant never forces a vector
+# store or model provider you are not using.
+api = ["fastapi>=0.115", "uvicorn[standard]>=0.30", "pydantic>=2.8"]
+postgres = ["psycopg[binary]>=3.2", "pgvector>=0.3"]
+opensearch = ["opensearch-py>=2.7"]
+anthropic = ["anthropic>=0.40"]
+parsing = ["pypdf>=5.0", "python-docx>=1.1", "markdown-it-py>=3.0"]
+dev = [
+  "pytest>=8.3",
+  "pytest-cov>=5.0",
+  "ruff>=0.6",
+  "mypy>=1.11",
+  "pre-commit>=3.8",
+]
+
+[project.scripts]
+warrant = "warrant.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/OWNER/warrant"
+Issues = "https://github.com/OWNER/warrant/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/warrant"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra --strict-markers"
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src/warrant"]

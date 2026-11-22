@@ -1,0 +1,51 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  vocabulary:
+    # Runs first and independently. A vocabulary violation is not a style nit
+    # — it is content that becomes permanent once merged, so it blocks before
+    # anything else is worth checking.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Restore local denylist
+        if: ${{ env.VOCABULARY_DENYLIST != '' }}
+        env:
+          VOCABULARY_DENYLIST: ${{ secrets.VOCABULARY_DENYLIST }}
+        run: printf '%s\n' "$VOCABULARY_DENYLIST" > .vocabulary-denylist
+      - run: python scripts/check_vocabulary.py
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e ".[dev]"
+      - run: ruff check .
+      - run: pytest -v
+
+  authz-probes:
+    # The red-team suite is split out so it is visible as its own required
+    # check. If authorization regresses, the failure should be unmissable in
+    # the PR view rather than buried in a general test run.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e ".[dev]"
+      - run: pytest tests/authz -v
