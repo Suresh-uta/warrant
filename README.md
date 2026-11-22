@@ -99,7 +99,11 @@ Each ingest stage is cached under its own key
 (`content_hash + stage_config_hash`), so swapping the embedding model re-runs
 only embedding, and editing one document reprocesses only that document.
 
-Full design: [`docs/architecture.md`](docs/architecture.md).
+**Diagrams: [suresh-uta.github.io/warrant](https://suresh-uta.github.io/warrant/)** — system
+overview, the access rule, pre-filter vs post-filter, write-path ordering, and
+the AWS deployment.
+
+Full design in prose: [`docs/architecture.md`](docs/architecture.md).
 Decisions and their rejected alternatives: [`docs/decisions/`](docs/decisions/).
 
 ## Roadmap
