@@ -28,3 +28,14 @@ data/
 .DS_Store
 .idea/
 .vscode/
+
+# Loose image drops (screenshots, photos, pasted references).
+# The vocabulary checker cannot read images, so a screenshot of an internal
+# diagram would pass CI and land in public history. Commit images only
+# deliberately, into docs/assets/, after looking at them.
+*.jpeg
+*.jpg
+*.png
+*.heic
+*.webp
+!docs/assets/**

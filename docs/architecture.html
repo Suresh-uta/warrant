@@ -1,0 +1,1250 @@
+<title>Warrant</title>
+<style>
+  :root {
+    --paper:       #F4F6F7;
+    --surface:     #FFFFFF;
+    --ink:         #141C22;
+    --ink-soft:    #4A5A64;
+    --rule:        #D3DCDF;
+    --rule-soft:   #E6ECEE;
+    --accent:      #146B5B;
+    --accent-soft: #E1EEEA;
+    --deny:        #9B3A2C;
+    --deny-soft:   #F7E7E3;
+
+    --flow-upload:   #27608F;
+    --flow-ask:      #146B5B;
+    --flow-job:      #6A4A94;
+    --flow-identity: #8A6410;
+
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, "Cascadia Mono",
+            "Roboto Mono", Consolas, monospace;
+    --serif: Charter, "Iowan Old Style", "Source Serif Pro", Georgia,
+             "Times New Roman", serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:       #0E151A;
+      --surface:     #152026;
+      --ink:         #E4ECEF;
+      --ink-soft:    #93A6AE;
+      --rule:        #27353C;
+      --rule-soft:   #1C282E;
+      --accent:      #4FBAA0;
+      --accent-soft: #12302A;
+      --deny:        #E08878;
+      --deny-soft:   #331F1B;
+
+      --flow-upload:   #6FA8D8;
+      --flow-ask:      #4FBAA0;
+      --flow-job:      #B197DE;
+      --flow-identity: #D4A849;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:       #0E151A;
+    --surface:     #152026;
+    --ink:         #E4ECEF;
+    --ink-soft:    #93A6AE;
+    --rule:        #27353C;
+    --rule-soft:   #1C282E;
+    --accent:      #4FBAA0;
+    --accent-soft: #12302A;
+    --deny:        #E08878;
+    --deny-soft:   #331F1B;
+
+    --flow-upload:   #6FA8D8;
+    --flow-ask:      #4FBAA0;
+    --flow-job:      #B197DE;
+    --flow-identity: #D4A849;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 28px 96px;
+  }
+
+  .col { max-width: 68ch; }
+
+  /* ---------- masthead ---------- */
+
+  header {
+    border-bottom: 1px solid var(--rule);
+    padding: 72px 0 40px;
+    margin-bottom: 56px;
+  }
+
+  .wordmark {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 22px;
+  }
+
+  h1 {
+    font-family: var(--mono);
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    text-wrap: balance;
+    margin: 0 0 20px;
+  }
+
+  .standfirst {
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 58ch;
+    margin: 0;
+  }
+
+  .meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-top: 32px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 26px;
+  }
+
+  /* ---------- sections ---------- */
+
+  section { margin-bottom: 72px; }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 18px;
+  }
+
+  .eyebrow::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  h2 {
+    font-family: var(--mono);
+    font-size: clamp(22px, 3vw, 29px);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    text-wrap: balance;
+    margin: 0 0 18px;
+  }
+
+  h3 {
+    font-family: var(--mono);
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 34px 0 10px;
+  }
+
+  p { margin: 0 0 18px; }
+
+  strong { font-weight: 600; }
+
+  em { font-style: italic; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.88em;
+    background: var(--rule-soft);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1px 5px;
+  }
+
+  /* ---------- figures ---------- */
+
+  figure {
+    margin: 40px 0;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 26px 26px 20px;
+    overflow-x: auto;
+  }
+
+  figure svg {
+    display: block;
+    width: 100%;
+    min-width: 640px;
+    height: auto;
+    color: var(--ink-soft);
+  }
+
+  /* The deployment diagram carries too much detail to shrink; let it scroll. */
+  figure.wide svg { min-width: 1240px; }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin: 0 0 22px;
+  }
+
+  .legend span { display: flex; align-items: center; gap: 7px; }
+
+  .swatch {
+    width: 18px;
+    height: 3px;
+    border-radius: 2px;
+    flex: none;
+  }
+
+  figcaption {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    max-width: 78ch;
+  }
+
+  figcaption b {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* ---------- pull quote ---------- */
+
+  .pull {
+    border-left: 2px solid var(--accent);
+    padding: 4px 0 4px 22px;
+    margin: 30px 0;
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--ink);
+    max-width: 60ch;
+  }
+
+  /* ---------- table ---------- */
+
+  .tablewrap { overflow-x: auto; margin: 30px 0; }
+
+  table {
+    width: 100%;
+    min-width: 580px;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 13.5px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--ink);
+    padding: 0 16px 9px 0;
+  }
+
+  td {
+    padding: 11px 16px 11px 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    line-height: 1.45;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  /* ---------- status list ---------- */
+
+  .status { list-style: none; padding: 0; margin: 22px 0 0; }
+
+  .status li {
+    display: flex;
+    gap: 14px;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 14px;
+  }
+
+  .status li:last-child { border-bottom: none; }
+
+  .tag {
+    flex: none;
+    width: 86px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .tag.built   { color: var(--accent); }
+  .tag.pending { color: var(--ink-soft); }
+
+  /* ---------- footer ---------- */
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 28px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 680px) {
+    header { padding-top: 48px; }
+    .standfirst { font-size: 18px; }
+    figure { padding: 18px 16px 14px; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <p class="wordmark">Warrant</p>
+    <h1>Retrieval that respects who's asking</h1>
+    <p class="standfirst">
+      Most RAG systems assume every document is equally readable by every user.
+      That holds for a public docs site, and breaks the moment the same pipeline
+      points at a store where some things are restricted.
+    </p>
+    <div class="meta">
+      <span>Architecture</span>
+      <span>Permission-aware RAG</span>
+      <span>Pre-alpha</span>
+    </div>
+  </header>
+
+  <section class="col">
+    <p class="eyebrow">The problem</p>
+    <h2>Access control is a retrieval concern</h2>
+    <p>
+      The usual shape is: retrieve the most relevant chunks, then drop the ones
+      the caller isn't allowed to see. It looks correct in a demo and it is
+      wrong in two ways at once.
+    </p>
+    <p>
+      The security objection is obvious — restricted text has already reached a
+      reranker, a model, and a log line before anything removed it. The
+      <em>quality</em> objection is the one that surprises people, and it is the
+      reason this design exists.
+    </p>
+    <p class="pull">
+      Filter after retrieval and your most access-restricted users get your
+      worst search results. It presents as a relevance complaint. It is an
+      architecture bug.
+    </p>
+  </section>
+
+  <section>
+    <p class="eyebrow">01 · System</p>
+    <div class="col">
+      <h2>Two paths, one store</h2>
+      <p>
+        Ingest parses documents into structured blocks, chunks them along that
+        structure, and writes each chunk with its access rule copied onto it.
+        Query resolves the caller, turns that into a filter, and applies the
+        filter inside every search leg before anything is scored.
+      </p>
+    </div>
+
+    <figure>
+      <svg viewBox="0 0 1000 412" role="img"
+           aria-label="Ingest flows left to right from source through parse, chunk, enrich and embed into a shared index. Query flows from caller through principal resolution to an ACL filter, which is applied inside both the keyword and vector search legs before results are reranked into a cited answer.">
+
+        <!-- ============ INGEST ============ -->
+        <text x="0" y="14" font-family="ui-monospace, Menlo, monospace" font-size="11"
+              letter-spacing="1.6" fill="currentColor">INGEST</text>
+
+        <g fill="none" stroke="currentColor" stroke-width="1.25">
+          <rect x="30"  y="32" width="130" height="48" rx="3"/>
+          <rect x="190" y="32" width="120" height="48" rx="3"/>
+          <rect x="340" y="32" width="120" height="48" rx="3"/>
+          <rect x="490" y="32" width="120" height="48" rx="3"/>
+          <rect x="640" y="32" width="120" height="48" rx="3"/>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="12.5"
+           text-anchor="middle" fill="currentColor">
+          <text x="95"  y="61">source</text>
+          <text x="250" y="61">parse</text>
+          <text x="400" y="61">chunk</text>
+          <text x="550" y="61">enrich</text>
+          <text x="700" y="61">embed</text>
+        </g>
+
+        <!-- ingest arrows -->
+        <g stroke="currentColor" stroke-width="1.25" fill="currentColor">
+          <line x1="160" y1="56" x2="182" y2="56"/>
+          <polygon points="190,56 182,51.5 182,60.5"/>
+          <line x1="310" y1="56" x2="332" y2="56"/>
+          <polygon points="340,56 332,51.5 332,60.5"/>
+          <line x1="460" y1="56" x2="482" y2="56"/>
+          <polygon points="490,56 482,51.5 482,60.5"/>
+          <line x1="610" y1="56" x2="632" y2="56"/>
+          <polygon points="640,56 632,51.5 632,60.5"/>
+          <!-- down into index -->
+          <line x1="700" y1="80" x2="700" y2="124"/>
+          <polygon points="700,132 695.5,124 704.5,124"/>
+        </g>
+        <text x="710" y="110" font-family="ui-monospace, Menlo, monospace"
+              font-size="11" fill="currentColor">upsert</text>
+
+        <!-- ============ INDEX ============ -->
+        <g style="color: var(--accent)">
+          <rect x="30" y="134" width="940" height="56" rx="3"
+                fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.25"/>
+          <text x="46" y="157" font-family="ui-monospace, Menlo, monospace"
+                font-size="11" letter-spacing="1.4" fill="currentColor">INDEX</text>
+          <text x="46" y="177" font-family="ui-monospace, Menlo, monospace"
+                font-size="12" fill="currentColor">chunk text · vector · min_clearance · allowed_groups · version · state</text>
+        </g>
+
+        <!-- ============ QUERY ============ -->
+        <text x="0" y="226" font-family="ui-monospace, Menlo, monospace" font-size="11"
+              letter-spacing="1.6" fill="currentColor">QUERY</text>
+
+        <g fill="none" stroke="currentColor" stroke-width="1.25">
+          <rect x="30"  y="286" width="112" height="48" rx="3"/>
+          <rect x="178" y="286" width="150" height="48" rx="3"/>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="12.5"
+           text-anchor="middle" fill="currentColor">
+          <text x="86"  y="315">caller</text>
+          <text x="253" y="309">resolve</text>
+          <text x="253" y="325">principal</text>
+        </g>
+
+        <!-- filter box, accented: this is the load-bearing step -->
+        <g style="color: var(--accent)">
+          <rect x="364" y="286" width="126" height="48" rx="3"
+                fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.5"/>
+          <text x="427" y="309" font-family="ui-monospace, Menlo, monospace"
+                font-size="12.5" text-anchor="middle" fill="currentColor">acl</text>
+          <text x="427" y="325" font-family="ui-monospace, Menlo, monospace"
+                font-size="12.5" text-anchor="middle" fill="currentColor">filter</text>
+        </g>
+
+        <!-- hybrid search group -->
+        <rect x="518" y="246" width="192" height="128" rx="4" fill="none"
+              stroke="currentColor" stroke-width="1" stroke-dasharray="4 3" opacity="0.65"/>
+        <text x="614" y="238" font-family="ui-monospace, Menlo, monospace" font-size="11"
+              letter-spacing="1.2" text-anchor="middle" fill="currentColor">HYBRID SEARCH</text>
+
+        <g fill="none" stroke="currentColor" stroke-width="1.25">
+          <rect x="534" y="262" width="160" height="42" rx="3"/>
+          <rect x="534" y="316" width="160" height="42" rx="3"/>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="12.5"
+           text-anchor="middle" fill="currentColor">
+          <text x="614" y="288">keyword leg</text>
+          <text x="614" y="342">vector leg</text>
+        </g>
+
+        <g fill="none" stroke="currentColor" stroke-width="1.25">
+          <rect x="738" y="286" width="104" height="48" rx="3"/>
+          <rect x="866" y="286" width="104" height="48" rx="3"/>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="12.5"
+           text-anchor="middle" fill="currentColor">
+          <text x="790" y="315">rerank</text>
+          <text x="918" y="309">answer +</text>
+          <text x="918" y="325">citations</text>
+        </g>
+
+        <!-- query arrows -->
+        <g stroke="currentColor" stroke-width="1.25" fill="currentColor">
+          <line x1="142" y1="310" x2="170" y2="310"/>
+          <polygon points="178,310 170,305.5 170,314.5"/>
+          <line x1="328" y1="310" x2="356" y2="310"/>
+          <polygon points="364,310 356,305.5 356,314.5"/>
+          <line x1="710" y1="310" x2="730" y2="310"/>
+          <polygon points="738,310 730,305.5 730,314.5"/>
+          <line x1="842" y1="310" x2="858" y2="310"/>
+          <polygon points="866,310 858,305.5 858,314.5"/>
+        </g>
+
+        <!-- filter into BOTH legs: the whole claim of the diagram -->
+        <g style="color: var(--accent)" stroke="currentColor" stroke-width="1.5" fill="currentColor">
+          <line x1="490" y1="302" x2="526" y2="285"/>
+          <polygon points="534,281 524,281.5 528,289.5"/>
+          <line x1="490" y1="318" x2="526" y2="335"/>
+          <polygon points="534,339 524,338.5 528,330.5"/>
+        </g>
+
+        <!-- hybrid search <-> index -->
+        <g stroke="currentColor" stroke-width="1.25" fill="currentColor">
+          <line x1="614" y1="198" x2="614" y2="240"/>
+          <polygon points="614,190 609.5,198 618.5,198"/>
+          <polygon points="614,246 609.5,238 618.5,238"/>
+        </g>
+        <text x="626" y="222" font-family="ui-monospace, Menlo, monospace"
+              font-size="11" fill="currentColor">filtered candidates</text>
+      </svg>
+      <figcaption>
+        <b>The filter enters the query, not the results.</b> Both the keyword and
+        vector legs receive the caller's ACL filter before scoring, so restricted
+        chunks are never candidates. Ingest copies each document's access rule
+        onto every chunk derived from it, which is what makes that filter a plain
+        index predicate instead of a join.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <p class="eyebrow">02 · The rule</p>
+    <div class="col">
+      <h2>Clearance AND groups</h2>
+      <p>
+        Two primitives, both opaque to the engine: an optional ordinal
+        <code>clearance</code> tier, and a set of <code>groups</code>. They are
+        combined with AND, and that conjunction is the whole security property.
+      </p>
+      <p>
+        Allow OR instead and you have rebuilt the most common real-world access
+        bug in this space: a sufficiently senior caller sees everything.
+      </p>
+    </div>
+
+    <figure>
+      <svg viewBox="0 0 660 404" role="img"
+           aria-label="A caller passes two gates in series. First, clearance must meet or exceed the document minimum, otherwise access is denied with reason clearance below minimum. Second, the caller's groups must intersect the document's allowed groups, otherwise access is denied with reason no group overlap. Only a caller clearing both gates is allowed.">
+
+        <g fill="none" stroke="currentColor" stroke-width="1.25">
+          <rect x="176" y="14" width="212" height="46" rx="3"/>
+          <rect x="146" y="112" width="272" height="56" rx="3"/>
+          <rect x="146" y="236" width="272" height="56" rx="3"/>
+        </g>
+
+        <g font-family="ui-monospace, Menlo, monospace" font-size="12.5"
+           text-anchor="middle" fill="currentColor">
+          <text x="282" y="42">caller</text>
+          <text x="282" y="137">clearance</text>
+          <text x="282" y="155">≥ min_clearance ?</text>
+          <text x="282" y="261">groups ∩</text>
+          <text x="282" y="279">allowed_groups ≠ ∅ ?</text>
+        </g>
+
+        <!-- pass-through spine -->
+        <g stroke="currentColor" stroke-width="1.25" fill="currentColor">
+          <line x1="282" y1="60" x2="282" y2="104"/>
+          <polygon points="282,112 277.5,104 286.5,104"/>
+          <line x1="282" y1="168" x2="282" y2="228"/>
+          <polygon points="282,236 277.5,228 286.5,228"/>
+          <line x1="282" y1="292" x2="282" y2="336"/>
+          <polygon points="282,344 277.5,336 286.5,336"/>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="11" fill="currentColor">
+          <text x="292" y="196">yes</text>
+          <text x="292" y="320">yes</text>
+        </g>
+
+        <!-- deny exits -->
+        <g style="color: var(--deny)" stroke="currentColor" stroke-width="1.25" fill="currentColor">
+          <line x1="418" y1="140" x2="448" y2="140"/>
+          <polygon points="456,140 448,135.5 448,144.5"/>
+          <line x1="418" y1="264" x2="448" y2="264"/>
+          <polygon points="456,264 448,259.5 448,268.5"/>
+        </g>
+        <g style="color: var(--deny)">
+          <rect x="456" y="118" width="190" height="44" rx="3"
+                fill="var(--deny-soft)" stroke="currentColor" stroke-width="1.25"/>
+          <rect x="456" y="242" width="190" height="44" rx="3"
+                fill="var(--deny-soft)" stroke="currentColor" stroke-width="1.25"/>
+          <text x="551" y="138" font-family="ui-monospace, Menlo, monospace"
+                font-size="12" text-anchor="middle" fill="currentColor">denied</text>
+          <text x="551" y="153" font-family="ui-monospace, Menlo, monospace"
+                font-size="10.5" text-anchor="middle" fill="currentColor">clearance_below_minimum</text>
+          <text x="551" y="262" font-family="ui-monospace, Menlo, monospace"
+                font-size="12" text-anchor="middle" fill="currentColor">denied</text>
+          <text x="551" y="277" font-family="ui-monospace, Menlo, monospace"
+                font-size="10.5" text-anchor="middle" fill="currentColor">no_group_overlap</text>
+          <text x="424" y="134" font-family="ui-monospace, Menlo, monospace"
+                font-size="11" fill="currentColor">no</text>
+          <text x="424" y="258" font-family="ui-monospace, Menlo, monospace"
+                font-size="11" fill="currentColor">no</text>
+        </g>
+
+        <!-- allowed -->
+        <g style="color: var(--accent)">
+          <rect x="176" y="344" width="212" height="46" rx="3"
+                fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.5"/>
+          <text x="282" y="372" font-family="ui-monospace, Menlo, monospace"
+                font-size="12.5" text-anchor="middle" fill="currentColor">allowed</text>
+        </g>
+      </svg>
+      <figcaption>
+        <b>Order matters.</b> The clearance gate runs first, so a document marked
+        public that also carries a minimum clearance stays clearance-gated — the
+        public wildcard satisfies only the group half. Swap the two blocks and
+        every public-but-restricted document silently becomes fully public.
+        Denials carry machine-readable reasons so the test suite can assert
+        <em>why</em>, not merely that.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <p class="eyebrow">03 · The argument</p>
+    <div class="col">
+      <h2>Why post-filtering fails twice</h2>
+      <p>
+        A reranker needs a deep candidate pool to be worth running. Retrieve a
+        hundred, keep the best ten. Drop unauthorized hits <em>after</em>
+        retrieval and a restricted caller doesn't lose ninety candidates — they
+        lose most of the ones that were ever going to matter.
+      </p>
+    </div>
+
+    <figure>
+      <svg viewBox="0 0 1000 300" role="img"
+           aria-label="Comparison. With post-filtering, a search retrieves one hundred candidates by relevance and then removes unauthorized ones, leaving about twelve for the reranker. With pre-filtering, the access filter is inside the query, so all one hundred retrieved candidates are already authorized and the reranker receives one hundred.">
+
+        <!-- divider -->
+        <line x1="500" y1="12" x2="500" y2="288" stroke="currentColor"
+              stroke-width="1" opacity="0.3"/>
+
+        <!-- ===== LEFT: post-filter ===== -->
+        <g style="color: var(--deny)">
+          <text x="24" y="26" font-family="ui-monospace, Menlo, monospace" font-size="11"
+                letter-spacing="1.4" fill="currentColor">POST-FILTER</text>
+        </g>
+        <text x="24" y="48" font-family="ui-monospace, Menlo, monospace" font-size="12"
+              fill="currentColor">search, then remove what they can't see</text>
+
+        <text x="24" y="92" font-family="ui-monospace, Menlo, monospace" font-size="11.5"
+              fill="currentColor">1 · retrieved by relevance</text>
+        <rect x="24" y="102" width="420" height="22" rx="2" fill="none"
+              stroke="currentColor" stroke-width="1.25"/>
+        <text x="454" y="118" font-family="ui-monospace, Menlo, monospace" font-size="12"
+              fill="currentColor">100</text>
+
+        <text x="24" y="162" font-family="ui-monospace, Menlo, monospace" font-size="11.5"
+              fill="currentColor">2 · survive the ACL check</text>
+        <g style="color: var(--deny)">
+          <rect x="24" y="172" width="50" height="22" rx="2"
+                fill="var(--deny-soft)" stroke="currentColor" stroke-width="1.25"/>
+          <line x1="78" y1="183" x2="440" y2="183" stroke="currentColor"
+                stroke-width="1" stroke-dasharray="3 4" opacity="0.6"/>
+          <text x="454" y="188" font-family="ui-monospace, Menlo, monospace" font-size="12"
+                fill="currentColor">12</text>
+        </g>
+
+        <g style="color: var(--deny)">
+          <rect x="24" y="230" width="420" height="44" rx="3"
+                fill="var(--deny-soft)" stroke="currentColor" stroke-width="1.25"/>
+          <text x="234" y="249" font-family="ui-monospace, Menlo, monospace"
+                font-size="12.5" text-anchor="middle" fill="currentColor">reranker sees 12</text>
+          <text x="234" y="265" font-family="ui-monospace, Menlo, monospace"
+                font-size="11" text-anchor="middle" fill="currentColor">recall collapses as access narrows</text>
+        </g>
+
+        <!-- ===== RIGHT: pre-filter ===== -->
+        <g style="color: var(--accent)">
+          <text x="534" y="26" font-family="ui-monospace, Menlo, monospace" font-size="11"
+                letter-spacing="1.4" fill="currentColor">PRE-FILTER</text>
+        </g>
+        <text x="534" y="48" font-family="ui-monospace, Menlo, monospace" font-size="12"
+              fill="currentColor">the filter is part of the query</text>
+
+        <text x="534" y="92" font-family="ui-monospace, Menlo, monospace" font-size="11.5"
+              fill="currentColor">1 · retrieved by relevance, filtered</text>
+        <g style="color: var(--accent)">
+          <rect x="534" y="102" width="420" height="22" rx="2"
+                fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.25"/>
+          <text x="964" y="118" font-family="ui-monospace, Menlo, monospace" font-size="12"
+                fill="currentColor">100</text>
+        </g>
+
+        <text x="534" y="162" font-family="ui-monospace, Menlo, monospace" font-size="11.5"
+              fill="currentColor">2 · no second pass needed</text>
+        <g style="color: var(--accent)">
+          <rect x="534" y="172" width="420" height="22" rx="2"
+                fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.25"/>
+          <text x="964" y="188" font-family="ui-monospace, Menlo, monospace" font-size="12"
+                fill="currentColor">100</text>
+        </g>
+
+        <g style="color: var(--accent)">
+          <rect x="534" y="230" width="420" height="44" rx="3"
+                fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.5"/>
+          <text x="744" y="249" font-family="ui-monospace, Menlo, monospace"
+                font-size="12.5" text-anchor="middle" fill="currentColor">reranker sees 100</text>
+          <text x="744" y="265" font-family="ui-monospace, Menlo, monospace"
+                font-size="11" text-anchor="middle" fill="currentColor">depth is independent of access</text>
+        </g>
+      </svg>
+      <figcaption>
+        <b>Same k, different pool.</b> Post-filtering spends the candidate budget
+        on documents the caller will never be shown, so the reranker is starved
+        in proportion to how restricted they are. Pre-filtering spends the whole
+        budget on documents they can actually see. The security win is the part
+        people notice; the recall win is the part that makes it an easy argument
+        in a design review.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <p class="eyebrow">04 · Write path</p>
+    <div class="col">
+      <h2>Security and consistency are separate problems</h2>
+      <p>
+        When an update <em>narrows</em> a document's access rule, both obvious
+        orderings fail. Write the new chunks then delete the old, and there is a
+        window where the broader rule is still live. Delete first, and the
+        document briefly vanishes.
+      </p>
+      <p>
+        Typical search stores offer no transaction across a document's chunks,
+        so one atomic mechanism isn't available. The way out is to notice these
+        are two properties with very different costs when violated — and to
+        stop making one mechanism carry both.
+      </p>
+    </div>
+
+    <figure>
+      <svg viewBox="0 0 1000 268" role="img"
+           aria-label="Two orderings compared. The naive ordering writes new chunks and then deletes the old ones, leaving a leak window in which the old broader access rule is still live. The safe ordering first narrows the access rule in place on existing chunks, then writes new chunks as pending, flips them to active, and deletes the old, so no window exists in which the old rule is live.">
+
+        <!-- ===== naive ===== -->
+        <g style="color: var(--deny)">
+          <text x="0" y="22" font-family="ui-monospace, Menlo, monospace" font-size="11"
+                letter-spacing="1.4" fill="currentColor">NAIVE ORDERING</text>
+        </g>
+
+        <line x1="0" y1="94" x2="1000" y2="94" stroke="currentColor"
+              stroke-width="1" opacity="0.35"/>
+
+        <g fill="none" stroke="currentColor" stroke-width="1.25">
+          <rect x="0" y="44" width="300" height="38" rx="3"/>
+          <rect x="640" y="44" width="300" height="38" rx="3"/>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="12"
+           text-anchor="middle" fill="currentColor">
+          <text x="150" y="68">write v2 chunks</text>
+          <text x="790" y="68">delete v1 chunks</text>
+        </g>
+
+        <!-- leak window -->
+        <g style="color: var(--deny)">
+          <rect x="300" y="44" width="340" height="38" rx="3"
+                fill="var(--deny-soft)" stroke="currentColor" stroke-width="1.5"
+                stroke-dasharray="5 3"/>
+          <text x="470" y="68" font-family="ui-monospace, Menlo, monospace"
+                font-size="12" text-anchor="middle" fill="currentColor">old broad rule still live</text>
+          <text x="470" y="112" font-family="ui-monospace, Menlo, monospace"
+                font-size="11" text-anchor="middle" fill="currentColor">leak window</text>
+        </g>
+
+        <!-- ===== safe ===== -->
+        <g style="color: var(--accent)">
+          <text x="0" y="168" font-family="ui-monospace, Menlo, monospace" font-size="11"
+                letter-spacing="1.4" fill="currentColor">SAFE ORDERING</text>
+        </g>
+
+        <line x1="0" y1="240" x2="1000" y2="240" stroke="currentColor"
+              stroke-width="1" opacity="0.35"/>
+
+        <g style="color: var(--accent)">
+          <rect x="0" y="190" width="286" height="38" rx="3"
+                fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.5"/>
+          <text x="143" y="214" font-family="ui-monospace, Menlo, monospace"
+                font-size="12" text-anchor="middle" fill="currentColor">narrow rule in place</text>
+        </g>
+
+        <g fill="none" stroke="currentColor" stroke-width="1.25">
+          <rect x="296" y="190" width="220" height="38" rx="3"/>
+          <rect x="526" y="190" width="200" height="38" rx="3"/>
+          <rect x="736" y="190" width="204" height="38" rx="3"/>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="12"
+           text-anchor="middle" fill="currentColor">
+          <text x="406" y="214">write v2 pending</text>
+          <text x="626" y="214">flip to active</text>
+          <text x="838" y="214">delete v1</text>
+        </g>
+
+        <g style="color: var(--accent)">
+          <text x="406" y="258" font-family="ui-monospace, Menlo, monospace"
+                font-size="11" text-anchor="middle" fill="currentColor">restrictive rule already live from here on</text>
+        </g>
+      </svg>
+      <figcaption>
+        <b>Narrowing is monotonically safe, so do it first.</b> Applying the
+        restrictive rule early cannot expose anything, which removes the security
+        problem entirely. Version consistency is then handled separately by
+        pending/active chunk state — the flip isn't atomic, so both versions are
+        briefly live, which shows a duplicate result and is deduplicated at
+        rerank time. A cosmetic issue, handled by a cosmetic mechanism.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <p class="eyebrow">05 · Ingest</p>
+    <div class="col">
+      <h2>Stage caches, keyed independently</h2>
+      <p>
+        Each stage caches under a key containing only the configuration that
+        affects that stage. Editing one document reprocesses one document;
+        swapping the context model re-runs enrichment and embedding but not
+        parsing.
+      </p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>Cost</th>
+            <th>Cache key</th>
+            <th>Re-runs when</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>parse → blocks</td>
+            <td>high</td>
+            <td>content_hash + parser_ver</td>
+            <td>document edited, parser upgraded</td>
+          </tr>
+          <tr>
+            <td>blocks → chunks</td>
+            <td>low</td>
+            <td>+ chunker_ver</td>
+            <td>…also chunking changed</td>
+          </tr>
+          <tr>
+            <td>chunks → context</td>
+            <td>high</td>
+            <td>+ context_model</td>
+            <td>…also context model swapped</td>
+          </tr>
+          <tr>
+            <td>context → vectors</td>
+            <td>medium</td>
+            <td>+ embed_model</td>
+            <td>…also embedding model swapped</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col">
+      <p>
+        One consequence is worth stating out loud: the embedding model is the
+        most expensive decision to reverse. Changing it invalidates every vector
+        with no reuse possible, so it belongs in the config hash — if nothing
+        else, so that a change is <em>detected</em> rather than silently
+        producing a mixed-model index.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">06 · Deployment</p>
+    <div class="col">
+      <h2>One stack per team, in their own account</h2>
+      <p>
+        The logical design maps onto AWS without much ceremony. Two placement
+        decisions carry most of the weight: heavy document work runs on Fargate
+        because parsing and enriching a large PDF exceeds a function's duration
+        and image limits, while request-path APIs stay on Lambda so they're
+        cheap and scale to zero. The receiver staying small is what lets ingest
+        back-pressure through the queue instead of dropping events when workers
+        saturate.
+      </p>
+      <p>
+        The access filter lives <em>inside</em> the OpenSearch query — part of
+        the hybrid request, applied to both the BM25 and k-NN legs before
+        scoring. There is no filtering step after retrieval, which is the whole
+        point of section 03.
+      </p>
+    </div>
+
+    <div class="legend">
+      <span><i class="swatch" style="background: var(--flow-upload)"></i>Upload · steps 1–5</span>
+      <span><i class="swatch" style="background: var(--flow-ask)"></i>Ask a question · A–C</span>
+      <span><i class="swatch" style="background: var(--flow-job)"></i>Background jobs</span>
+      <span><i class="swatch" style="background: var(--flow-identity)"></i>Identity checks</span>
+    </div>
+
+    <figure class="wide">
+      <svg viewBox="0 0 1460 940" role="img"
+           aria-label="AWS deployment. Clients reach a private API Gateway. Uploads are presigned and written directly to an S3 documents bucket, which raises an object event to EventBridge, then an SQS queue with a dead letter queue, then Fargate ingest workers that call Textract for scans, Bedrock for embeddings, write parsed artifacts to S3, and write ordered chunk updates to OpenSearch. Questions go through a Lambda authorizer and the Warrant API Lambda, which searches OpenSearch with the access filter inside the query and calls Bedrock to rerank and answer. Background jobs run a daily housekeeping Lambda and a Step Functions reindex that fans out to Fargate workers writing a new index before an alias swap. Identity is resolved outside the stack.">
+
+        <!-- ================= CLIENTS (outside) ================= -->
+        <g fill="none" stroke="currentColor" stroke-width="1.25">
+          <rect x="10" y="120" width="150" height="64" rx="3"/>
+          <rect x="10" y="200" width="150" height="64" rx="3"/>
+          <rect x="10" y="280" width="150" height="64" rx="3"/>
+          <rect x="10" y="360" width="150" height="64" rx="3"/>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="12"
+           text-anchor="middle" fill="currentColor">
+          <text x="85" y="147">uploaders</text>
+          <text x="85" y="227">people</text>
+          <text x="85" y="307">services</text>
+          <text x="85" y="387">MCP clients</text>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="10"
+           text-anchor="middle" fill="currentColor" opacity="0.75">
+          <text x="85" y="164">upload · delete</text>
+          <text x="85" y="244">ask questions</text>
+          <text x="85" y="324">reader role</text>
+          <text x="85" y="404">editors, agents</text>
+        </g>
+
+        <!-- identity provider, outside the stack -->
+        <g style="color: var(--flow-identity)">
+          <rect x="10" y="520" width="150" height="76" rx="3" fill="none"
+                stroke="currentColor" stroke-width="1.25" stroke-dasharray="5 3"/>
+          <text x="85" y="548" font-family="ui-monospace, Menlo, monospace"
+                font-size="12" text-anchor="middle" fill="currentColor">identity</text>
+          <text x="85" y="565" font-family="ui-monospace, Menlo, monospace"
+                font-size="10" text-anchor="middle" fill="currentColor">SSO · IAM · directory</text>
+          <text x="85" y="581" font-family="ui-monospace, Menlo, monospace"
+                font-size="10" text-anchor="middle" fill="currentColor" opacity="0.8">outside the stack</text>
+        </g>
+
+        <!-- ================= ACCOUNT BOUNDARY ================= -->
+        <rect x="176" y="56" width="1264" height="860" rx="5" fill="none"
+              stroke="currentColor" stroke-width="1" stroke-dasharray="6 4" opacity="0.5"/>
+        <text x="190" y="46" font-family="ui-monospace, Menlo, monospace" font-size="11"
+              letter-spacing="1.2" fill="currentColor">YOUR AWS ACCOUNT — PRIVATE SUBNETS · VPC ENDPOINTS · NO INTERNET EGRESS</text>
+
+        <!-- ================= EDGE ================= -->
+        <g fill="none" stroke="currentColor" stroke-width="1.25">
+          <rect x="200" y="120" width="132" height="290" rx="3"/>
+          <rect x="200" y="440" width="132" height="66" rx="3"/>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="12"
+           text-anchor="middle" fill="currentColor">
+          <text x="266" y="252">API Gateway</text>
+          <text x="266" y="470">λ authorizer</text>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="10"
+           text-anchor="middle" fill="currentColor" opacity="0.75">
+          <text x="266" y="269">private</text>
+          <text x="266" y="286">/v1 · /svc · /mcp</text>
+          <text x="266" y="487">resolve principal</text>
+        </g>
+
+        <!-- ================= INGEST ROW ================= -->
+        <g fill="none" stroke="currentColor" stroke-width="1.25">
+          <rect x="372" y="128" width="146" height="64" rx="3"/>
+          <rect x="558" y="128" width="146" height="64" rx="3"/>
+          <rect x="744" y="128" width="130" height="64" rx="3"/>
+          <rect x="744" y="226" width="130" height="52" rx="3"/>
+          <rect x="914" y="118" width="206" height="84" rx="3"/>
+          <rect x="914" y="232" width="140" height="52" rx="3"/>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="12"
+           text-anchor="middle" fill="currentColor">
+          <text x="445" y="154">S3 documents</text>
+          <text x="631" y="154">EventBridge</text>
+          <text x="809" y="158">SQS ingest</text>
+          <text x="809" y="248">DLQ</text>
+          <text x="1017" y="146">Fargate ingest</text>
+          <text x="984" y="254">Textract</text>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="10"
+           text-anchor="middle" fill="currentColor" opacity="0.75">
+          <text x="445" y="171">only the role writes</text>
+          <text x="631" y="171">ingest | delete</text>
+          <text x="809" y="175">at-least-once</text>
+          <text x="809" y="264">after 3 attempts</text>
+          <text x="1017" y="164">dedup · parse · chunk</text>
+          <text x="1017" y="180">enrich · embed · write</text>
+          <text x="984" y="270">scanned pages only</text>
+        </g>
+
+        <!-- ================= QUERY ROW ================= -->
+        <g fill="none" stroke="currentColor" stroke-width="1.25">
+          <rect x="420" y="338" width="196" height="84" rx="3"/>
+        </g>
+        <text x="518" y="366" font-family="ui-monospace, Menlo, monospace"
+              font-size="12" text-anchor="middle" fill="currentColor">λ Warrant API</text>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="10"
+           text-anchor="middle" fill="currentColor" opacity="0.75">
+          <text x="518" y="384">bounded retrieval loop</text>
+          <text x="518" y="400">citations · staleness</text>
+        </g>
+
+        <!-- ================= JOBS ROWS ================= -->
+        <g fill="none" stroke="currentColor" stroke-width="1.25">
+          <rect x="200" y="560" width="150" height="64" rx="3"/>
+          <rect x="390" y="556" width="176" height="72" rx="3"/>
+          <rect x="200" y="672" width="150" height="88" rx="3"/>
+          <rect x="390" y="684" width="150" height="64" rx="3"/>
+          <rect x="580" y="676" width="186" height="80" rx="3"/>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="12"
+           text-anchor="middle" fill="currentColor">
+          <text x="275" y="590">EventBridge</text>
+          <text x="478" y="582">λ housekeeping</text>
+          <text x="275" y="702">Step Functions</text>
+          <text x="465" y="714">SQS reindex</text>
+          <text x="673" y="706">Fargate reindex</text>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="10"
+           text-anchor="middle" fill="currentColor" opacity="0.75">
+          <text x="275" y="606">scheduler · daily</text>
+          <text x="478" y="599">mark expired</text>
+          <text x="478" y="615">reconcile deletions</text>
+          <text x="275" y="719">build → eval →</text>
+          <text x="275" y="735">swap alias</text>
+          <text x="465" y="730">one message per doc</text>
+          <text x="673" y="723">workers × N</text>
+          <text x="673" y="739">writes the new index</text>
+        </g>
+
+        <!-- ================= SHARED STORES ================= -->
+        <g style="color: var(--accent)">
+          <rect x="1170" y="120" width="250" height="80" rx="3"
+                fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.25"/>
+          <rect x="1170" y="300" width="250" height="170" rx="3"
+                fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="1170" y="510" width="250" height="130" rx="3"
+                fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.25"/>
+
+          <text x="1295" y="150" font-family="ui-monospace, Menlo, monospace"
+                font-size="12" text-anchor="middle" fill="currentColor">S3 artifacts</text>
+          <text x="1295" y="168" font-family="ui-monospace, Menlo, monospace"
+                font-size="10" text-anchor="middle" fill="currentColor">parsed trees · stage cache</text>
+          <text x="1295" y="184" font-family="ui-monospace, Menlo, monospace"
+                font-size="10" text-anchor="middle" fill="currentColor">eval snapshots</text>
+
+          <text x="1295" y="332" font-family="ui-monospace, Menlo, monospace"
+                font-size="12.5" text-anchor="middle" fill="currentColor">OpenSearch</text>
+          <text x="1295" y="352" font-family="ui-monospace, Menlo, monospace"
+                font-size="10" text-anchor="middle" fill="currentColor">warrant-chunks · warrant-docs</text>
+          <text x="1295" y="372" font-family="ui-monospace, Menlo, monospace"
+                font-size="10" text-anchor="middle" fill="currentColor">BM25 + k-NN, fused</text>
+          <text x="1295" y="396" font-family="ui-monospace, Menlo, monospace"
+                font-size="10.5" text-anchor="middle" fill="currentColor">min_clearance · allowed_groups</text>
+          <text x="1295" y="412" font-family="ui-monospace, Menlo, monospace"
+                font-size="10.5" text-anchor="middle" fill="currentColor">filter inside both legs</text>
+          <text x="1295" y="440" font-family="ui-monospace, Menlo, monospace"
+                font-size="10" text-anchor="middle" fill="currentColor" opacity="0.8">read alias · write alias</text>
+
+          <text x="1295" y="540" font-family="ui-monospace, Menlo, monospace"
+                font-size="12" text-anchor="middle" fill="currentColor">Bedrock</text>
+          <text x="1295" y="560" font-family="ui-monospace, Menlo, monospace"
+                font-size="10" text-anchor="middle" fill="currentColor">Titan Text Embeddings V2</text>
+          <text x="1295" y="578" font-family="ui-monospace, Menlo, monospace"
+                font-size="10" text-anchor="middle" fill="currentColor">Cohere Rerank</text>
+          <text x="1295" y="596" font-family="ui-monospace, Menlo, monospace"
+                font-size="10" text-anchor="middle" fill="currentColor">Claude Haiku 4.5 — enrich</text>
+          <text x="1295" y="614" font-family="ui-monospace, Menlo, monospace"
+                font-size="10" text-anchor="middle" fill="currentColor">Claude Sonnet 5 — answer</text>
+        </g>
+
+        <!-- ================= UPLOAD FLOW (blue) ================= -->
+        <g style="color: var(--flow-upload)" stroke="currentColor" stroke-width="1.4" fill="currentColor">
+          <line x1="160" y1="152" x2="188" y2="150"/>
+          <polygon points="196,150 188,145.5 188,154.5"/>
+          <polyline points="160,136 160,98 445,98 445,120" fill="none"/>
+          <polygon points="445,128 440.5,120 449.5,120"/>
+          <line x1="518" y1="160" x2="550" y2="160"/>
+          <polygon points="558,160 550,155.5 550,164.5"/>
+          <line x1="704" y1="160" x2="736" y2="160"/>
+          <polygon points="744,160 736,155.5 736,164.5"/>
+          <line x1="874" y1="160" x2="906" y2="160"/>
+          <polygon points="914,160 906,155.5 906,164.5"/>
+          <line x1="809" y1="192" x2="809" y2="218"/>
+          <polygon points="809,226 804.5,218 813.5,218"/>
+          <line x1="1017" y1="202" x2="1017" y2="224"/>
+          <polygon points="1017,232 1012.5,224 1021.5,224"/>
+          <line x1="1120" y1="152" x2="1162" y2="152"/>
+          <polygon points="1170,152 1162,147.5 1162,156.5"/>
+          <polyline points="1120,182 1145,182 1145,348 1162,348" fill="none"/>
+          <polygon points="1170,348 1162,343.5 1162,352.5"/>
+          <polyline points="1120,196 1157,196 1157,562 1162,562" fill="none"/>
+          <polygon points="1170,562 1162,557.5 1162,566.5"/>
+        </g>
+        <g style="color: var(--flow-upload)" font-family="ui-monospace, Menlo, monospace"
+           font-size="10.5" fill="currentColor">
+          <text x="166" y="128">1 · POST /documents</text>
+          <text x="238" y="92">2 · upload via presigned URL</text>
+          <text x="522" y="152">3 · event</text>
+          <text x="878" y="152">4</text>
+          <text x="816" y="212">3 fails</text>
+          <text x="1090" y="146">5 · artifacts</text>
+          <text x="1066" y="340">5 · ordered writes</text>
+          <text x="1066" y="556">embed</text>
+        </g>
+
+        <!-- ================= ASK FLOW (green) ================= -->
+        <g style="color: var(--flow-ask)" stroke="currentColor" stroke-width="1.4" fill="currentColor">
+          <line x1="160" y1="232" x2="188" y2="248"/>
+          <polygon points="196,252 186,249 190,241"/>
+          <line x1="160" y1="312" x2="188" y2="318"/>
+          <polygon points="196,320 186,319 189,311"/>
+          <line x1="160" y1="392" x2="188" y2="388"/>
+          <polygon points="196,386 186,385 188,393"/>
+          <line x1="332" y1="372" x2="412" y2="378"/>
+          <polygon points="420,379 411,375 410,383"/>
+          <line x1="616" y1="366" x2="1162" y2="366"/>
+          <polygon points="1170,366 1162,361.5 1162,370.5"/>
+          <polyline points="616,402 1130,402 1130,598 1162,598" fill="none"/>
+          <polygon points="1170,598 1162,593.5 1162,602.5"/>
+        </g>
+        <g style="color: var(--flow-ask)" font-family="ui-monospace, Menlo, monospace"
+           font-size="10.5" fill="currentColor">
+          <text x="166" y="226">A · ask</text>
+          <text x="166" y="340">SigV4 · /mcp</text>
+          <text x="340" y="400">A</text>
+          <text x="700" y="358">B · search — the filter is part of the query</text>
+          <text x="700" y="394">C · rerank, then answer with citations</text>
+        </g>
+
+        <!-- ================= IDENTITY (gold, dashed) ================= -->
+        <g style="color: var(--flow-identity)" stroke="currentColor" stroke-width="1.4"
+           fill="currentColor" stroke-dasharray="5 3">
+          <line x1="160" y1="548" x2="188" y2="492"/>
+          <polyline points="266,440 266,418" fill="none"/>
+        </g>
+        <g style="color: var(--flow-identity)" fill="currentColor">
+          <polygon points="196,486 189,493 186,484"/>
+          <polygon points="266,410 261.5,418 270.5,418"/>
+        </g>
+        <g style="color: var(--flow-identity)" font-family="ui-monospace, Menlo, monospace"
+           font-size="10.5" fill="currentColor">
+          <text x="150" y="640">verified claims only —</text>
+          <text x="150" y="655">never from the model</text>
+          <text x="276" y="432">attach</text>
+        </g>
+
+        <!-- ================= JOBS (purple) ================= -->
+        <g style="color: var(--flow-job)" stroke="currentColor" stroke-width="1.4" fill="currentColor">
+          <line x1="350" y1="592" x2="382" y2="592"/>
+          <polygon points="390,592 382,587.5 382,596.5"/>
+          <polyline points="566,592 1100,592 1100,452 1162,452" fill="none"/>
+          <polygon points="1170,452 1162,447.5 1162,456.5"/>
+          <line x1="350" y1="716" x2="382" y2="716"/>
+          <polygon points="390,716 382,711.5 382,720.5"/>
+          <line x1="540" y1="716" x2="572" y2="716"/>
+          <polygon points="580,716 572,711.5 572,720.5"/>
+          <polyline points="766,716 1115,716 1115,466 1162,466" fill="none"/>
+          <polygon points="1170,466 1162,461.5 1162,470.5"/>
+        </g>
+        <g style="color: var(--flow-job)" font-family="ui-monospace, Menlo, monospace"
+           font-size="10.5" fill="currentColor">
+          <text x="600" y="586">reconcile · expire</text>
+          <text x="800" y="710">bulk write → eval gate → atomic alias swap</text>
+          <text x="356" y="710">fan out</text>
+        </g>
+
+        <!-- ================= CROSS-CUTTING ================= -->
+        <g fill="none" stroke="currentColor" stroke-width="1" opacity="0.8">
+          <rect x="200" y="820" width="190" height="52" rx="3"/>
+          <rect x="404" y="820" width="190" height="52" rx="3"/>
+          <rect x="608" y="820" width="190" height="52" rx="3"/>
+          <rect x="812" y="820" width="190" height="52" rx="3"/>
+          <rect x="1016" y="820" width="190" height="52" rx="3"/>
+          <rect x="1220" y="820" width="190" height="52" rx="3"/>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="11.5"
+           text-anchor="middle" fill="currentColor">
+          <text x="295" y="843">KMS</text>
+          <text x="499" y="843">Secrets Manager</text>
+          <text x="703" y="843">CloudWatch</text>
+          <text x="907" y="843">X-Ray</text>
+          <text x="1111" y="843">SNS</text>
+          <text x="1315" y="843">VPC endpoints</text>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="9.5"
+           text-anchor="middle" fill="currentColor" opacity="0.72">
+          <text x="295" y="859">encryption at rest</text>
+          <text x="499" y="859">connector credentials</text>
+          <text x="703" y="859">logs · alarms · audit</text>
+          <text x="907" y="859">retrieval traces</text>
+          <text x="1111" y="859">alarms · reminders</text>
+          <text x="1315" y="859">S3 · SQS · Bedrock · STS</text>
+        </g>
+      </svg>
+      <figcaption>
+        <b>Numbers follow one document; letters follow one question.</b>
+        Uploads never pass through the API — it issues a presigned URL and the
+        bytes go straight to S3, so a large file never occupies a function's
+        memory or timeout. Everything heavy is Fargate; everything
+        request-shaped is Lambda. Nothing in the account reaches the internet;
+        Bedrock, S3, SQS, and STS are all VPC endpoints, which means document
+        text never leaves the account boundary on its way to a model.
+      </figcaption>
+    </figure>
+
+    <div class="col">
+      <h3>Why the reindex path is a state machine</h3>
+      <p>
+        Rebuilding vectors can't take the live index down, so Step Functions
+        drives the sequence: build a timestamped index alongside the live one,
+        fan out one message per document, run the eval suite against the result,
+        and only then swap the alias. The eval gate is the interesting part —
+        the swap is conditional on measurement, which is what makes
+        <em>"retrieval changes ship because numbers improved"</em> an enforced
+        property rather than an intention.
+      </p>
+    </div>
+  </section>
+
+  <section class="col">
+    <p class="eyebrow">07 · Status</p>
+    <h2>What's real today</h2>
+    <p>
+      The authorization core and its red-team probes are implemented and
+      passing. Everything else in this document is design. Saying so plainly is
+      cheaper than implying more works than does.
+    </p>
+    <ul class="status">
+      <li><span class="tag built">Built</span><span>authorization policy, ACL filter, filter/policy equivalence test</span></li>
+      <li><span class="tag built">Built</span><span>red-team probes: low clearance, wrong group, hierarchy traversal</span></li>
+      <li><span class="tag pending">Next</span><span>structure-preserving parsing; tables stay atomic</span></li>
+      <li><span class="tag pending">Next</span><span>structure-aware chunking</span></li>
+      <li><span class="tag pending">Next</span><span>hybrid retrieval with pre-filtered legs</span></li>
+      <li><span class="tag pending">Next</span><span>cited answers, groundedness check, staleness disclosure</span></li>
+      <li><span class="tag pending">Later</span><span>incremental reindex, alias swap, source reconciliation</span></li>
+    </ul>
+  </section>
+
+  <footer>
+    Warrant · architecture · permission-aware retrieval with grounded citations
+  </footer>
+
+</div>
