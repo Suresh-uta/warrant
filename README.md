@@ -15,6 +15,9 @@ Warrant treats access control as a retrieval concern rather than a
 post-processing step, and treats "did we leak anything?" as a test you run on
 every change rather than a question you answer in a review.
 
+**New here?** [`docs/problems.md`](docs/problems.md) explains the five reasons
+retrieval projects stall before they reach the documents worth searching.
+
 ## What makes it different
 
 - **Filters applied inside every search leg, before scoring.** Keyword and
